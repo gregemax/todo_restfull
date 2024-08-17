@@ -7,7 +7,7 @@ import * as dotenv from "dotenv";
 import router from "./router/userrouter";
 import { login } from "./controller/usercontroller";
 import Todo from "./router/todorouter";
-
+ import * as cors from "cors";
 dotenv.config({ path: "./.env" });
 
 process.on("uncaughtException", (err) => {
@@ -19,7 +19,14 @@ process.on("uncaughtException", (err) => {
 
 AppDataSource
 const app = express();
-
+app.use(cors());
+app.use(
+  cors({
+    origin: "*", 
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"], 
+  })
+);
 app.use(express.json());
 
 app.use("/users", router);

@@ -42,6 +42,7 @@ const dotenv = __importStar(require("dotenv"));
 const userrouter_1 = __importDefault(require("./router/userrouter"));
 const usercontroller_1 = require("./controller/usercontroller");
 const todorouter_1 = __importDefault(require("./router/todorouter"));
+const cors = __importStar(require("cors"));
 dotenv.config({ path: "./.env" });
 process.on("uncaughtException", (err) => {
     console.log(err["message"] || err);
@@ -49,6 +50,12 @@ process.on("uncaughtException", (err) => {
 });
 db_1.default;
 const app = (0, express_1.default)();
+app.use(cors());
+app.use(cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+}));
 app.use(express_1.default.json());
 app.use("/users", userrouter_1.default);
 app.use("/todos", todorouter_1.default);
