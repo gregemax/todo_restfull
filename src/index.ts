@@ -7,12 +7,12 @@ import * as dotenv from "dotenv";
 import router from "./router/userrouter";
 import { login } from "./controller/usercontroller";
 import Todo from "./router/todorouter";
- import * as cors from "cors";
+ import cors from "cors";
 dotenv.config({ path: "./.env" });
 
 process.on("uncaughtException", (err) => {
   console.log(err["message"]||err);
-
+ 
   process.exit(1);
 });
 
@@ -42,7 +42,7 @@ app.use("*", handle);
 app.listen(4000, () => {
     
     console.log(
-      "Express server has started on port 3000. Open http://localhost:3000/users to see results"
+      "Express server has started on port 4000"
     );
 });
 
