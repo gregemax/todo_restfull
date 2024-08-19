@@ -9,7 +9,7 @@ export const getalltodo = (
   response: Response,
   next: NextFunction
 ) => {
-  response.json({todos:todoRepository.find({where: { User: request['user'].id } })});
+  return response.json({todos:todoRepository.find({where: { User: request['user'].id } })});
 };
 
 export const getonetodo = async (
@@ -24,9 +24,9 @@ export const getonetodo = async (
   });
 
   if (!user) {
-    response.json( "not found todo");
+    return response.json( "not found todo");
   }
-  response.json( {user});
+  return response.json( {user});
 };
 
 export const createtodo = async (
@@ -58,7 +58,7 @@ export const createtodo = async (
 user.User = request["user"].id;
   const todo = await todoRepository.save(user);
 
-  return response.json({
+  return return response.json({
     todo:todo,
   });
 };
@@ -78,7 +78,7 @@ export const deletetodo = async (
 
   await todoRepository.remove(userToRemove);
 
-  response.send( "user has been removed");
+  return response.send( "user has been removed");
 };
 
 
@@ -91,5 +91,5 @@ export const updatetodo = async (
     parseInt(request.params.id),
     request.body
   );
-  response.send("updated successfull")
+  return response.send("updated successfull")
 };
