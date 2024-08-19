@@ -58,7 +58,7 @@ export const createtodo = async (
 user.User = request["user"].id;
   const todo = await todoRepository.save(user);
 
-  return return response.json({
+  return response.json({
     todo:todo,
   });
 };
@@ -73,7 +73,7 @@ export const deletetodo = async (
   let userToRemove = await todoRepository.findOneBy({ id });
 
   if (!userToRemove) {
-    response("this user not exist");
+    response.send("this user not exist");
   }
 
   await todoRepository.remove(userToRemove);
