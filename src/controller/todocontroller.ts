@@ -24,9 +24,9 @@ export const getonetodo = async (
   });
 
   if (!user) {
-    return "not found todo";
+    response.json( "not found todo");
   }
-  return user;
+  response.json( user);
 };
 
 export const createtodo = async (
@@ -78,7 +78,7 @@ export const deletetodo = async (
 
   await todoRepository.remove(userToRemove);
 
-  return "user has been removed";
+  response.json( "user has been removed");
 };
 
 
@@ -91,4 +91,5 @@ export const updatetodo = async (
     parseInt(request.params.id),
     request.body
   );
+  response.send("updated successfull")
 };
