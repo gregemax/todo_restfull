@@ -10,7 +10,7 @@ export const all = (
   response: Response,
   next: NextFunction
 ) => {
-  return userRepository.find();
+  response.json({user: userRepository.find()});
 };
 
 export const one = async (
@@ -25,9 +25,9 @@ export const one = async (
   });
 
   if (!user) {
-    return "unregistered user";
+    response.send( "unregistered user");
   }
-  return user;
+  response.json({user});
 };
 
 export const save = async (
@@ -60,7 +60,7 @@ export const save = async (
       { expiresIn: "1h" }
     );
 
-    return response.json({
+     response.json({
       token,
       saveduser,
     });
@@ -79,12 +79,12 @@ export const del = async (
   let userToRemove = await userRepository.findOneBy({ id });
 
   if (!userToRemove) {
-    return "this user not exist";
+    response.send("this user not exist");
   }
 
   await userRepository.remove(userToRemove);
 
-  return "user has been removed";
+  response.send("user has been removed");
 };
 
 export const login = async (
