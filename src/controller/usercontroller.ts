@@ -10,7 +10,7 @@ export const all = (
   response: Response,
   next: NextFunction
 ) => {
-  response.json({user: userRepository.find()});
+  return response.json({user: userRepository.find()});
 };
 
 export const one = async (
@@ -25,9 +25,9 @@ export const one = async (
   });
 
   if (!user) {
-    response.send( "unregistered user");
+    return response.send( "unregistered user");
   }
-  response.json({user});
+  return response.json({user});
 };
 
 export const save = async (
@@ -38,13 +38,13 @@ export const save = async (
   try {
     let { name, password, confirmpassword, email } = request.body;
     if (password != confirmpassword) {
-      response.json({
+      return response.json({
         message: `  password must match confirm password`,
       });
     }
 
     if (!name && !password && !email) {
-      response.json({
+      return response.json({
         message: `please provide name, password, email`,
       });
     }
@@ -60,12 +60,12 @@ export const save = async (
       { expiresIn: "1h" }
     );
 
-     response.json({
+     return response.json({
       token,
       saveduser,
     });
   } catch (error) {
-    response.status(500).json({ message: error.message });
+    return response.status(500).json({ message: error.message });
   }
 };
 
@@ -79,12 +79,12 @@ export const del = async (
   let userToRemove = await userRepository.findOneBy({ id });
 
   if (!userToRemove) {
-    response.send("this user not exist");
+    return response.send("this user not exist");
   }
 
   await userRepository.remove(userToRemove);
 
-  response.send("user has been removed");
+  return response.send("user has been removed");
 };
 
 export const login = async (
@@ -95,7 +95,7 @@ export const login = async (
   try {
     const { email, password } = request.body;
     if (!email && !password) {
-      response.json({
+      return response.json({
         message: ` enter email or password`,
       });
     }
@@ -105,13 +105,13 @@ export const login = async (
      
     } as any);
     if (!user) {
-      response.json({
+      return response.json({
         message: "no user found with this email ",
       });
     }
     const veifypassword = bcrypt.compare(password, user.password);
     if (!veifypassword) {
-      response.json({
+      return response.json({
         message: "please enter a correct password ",
       });
     }
@@ -125,11 +125,11 @@ export const login = async (
       { expiresIn: "3d" }
     );
 
-    response.json({
+    return response.json({
       token,
       user,
     });
   } catch (error) {
-    response.status(500).json({ message: error.message });
+    return response.status(500).json({ message: error.message });
   }
 };
