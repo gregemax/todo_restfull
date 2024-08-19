@@ -76,7 +76,7 @@ export const deletetodo = async (
     response.send("this user not exist");
   }
 
-  await todoRepository.remove(userToRemove);
+  await todoRepository.delete({ id: userToRemove.id });
 
   return response.send( "user has been removed");
 };
@@ -87,9 +87,10 @@ export const updatetodo = async (
   response: Response,
   next: NextFunction
 ) => {
+  const object = Object.assign({ updatedAt: new Date(Date.now()) }, request.body);
   const updatetod = await todoRepository.update(
     parseInt(request.params.id),
-    request.body
+    object
   );
   return response.send("updated successfull")
 };
