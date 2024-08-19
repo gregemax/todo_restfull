@@ -9,7 +9,7 @@ export const getalltodo = (
   response: Response,
   next: NextFunction
 ) => {
-  return todoRepository.find({where: { User: request['user'].id } });
+  response.json({todos:todoRepository.find({where: { User: request['user'].id } })});
 };
 
 export const getonetodo = async (
@@ -26,7 +26,7 @@ export const getonetodo = async (
   if (!user) {
     response.json( "not found todo");
   }
-  response.json( user);
+  response.json( {user});
 };
 
 export const createtodo = async (
@@ -78,7 +78,7 @@ export const deletetodo = async (
 
   await todoRepository.remove(userToRemove);
 
-  response.json( "user has been removed");
+  response.send( "user has been removed");
 };
 
 
