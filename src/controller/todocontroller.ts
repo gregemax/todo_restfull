@@ -73,7 +73,7 @@ export const deletetodo = async (
   let userToRemove = await todoRepository.findOneBy({ id });
 
   if (!userToRemove) {
-    return "this user not exist";
+    response("this user not exist");
   }
 
   await todoRepository.remove(userToRemove);
