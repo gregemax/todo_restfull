@@ -1,7 +1,7 @@
 import { getRepository } from "typeorm";
 import { User } from "../entity/user";
 import { Request, Response, NextFunction } from "express";
-import * as bcrypt from "bcrypt";
+import * as bcryptjs from "bcryptjs";
 import * as jwt from "jsonwebtoken";
 import AppDataSource from "../db";
 const userRepository = AppDataSource.getRepository(User);
@@ -48,7 +48,7 @@ export const save = async (
         message: `please provide name, password, email`,
       });
     }
-    password = await bcrypt.hash(password, 12);
+    password = await bcryptjs.hash(password, 12);
     const user = await userRepository.create({ email, name, password });
     const saveduser = await userRepository.save(user);
     const token = await jwt.sign(
@@ -109,7 +109,7 @@ export const login = async (
         message: "no user found with this email ",
       });
     }
-    const veifypassword = bcrypt.compare(password, user.password);
+    const veifypassword = bcryptjs.compare(password, user.password);
     if (!veifypassword) {
       return response.json({
         message: "please enter a correct password ",
